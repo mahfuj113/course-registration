@@ -2,12 +2,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { FaDollarSign, FaBookOpen } from 'react-icons/fa';
 import Cart from "../Cart/Cart";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Cards = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState([]);
     const [totalCredit, setTotalCredit] = useState(0);
-    const [creditRemaining, setCreditRemaininng] = useState(0);
+    const [creditRemaining, setCreditRemaininng] = useState(20);
+    const [price, setPrice] = useState(0);
 
     const budgetCredit = 20;
 
@@ -18,27 +21,31 @@ const Cards = () => {
     }, [])
     const handleAddCourse = course => {
         const isExist = selectedCourse.find(item => item.id === course.id)
-        let credit = course.credit
-        if (isExist) {
-            alert("Already booked try another")
+        let credit = course.credit;
+        let totalPrice = course.price;
+
+        selectedCourse.forEach(course => {
+            credit += course.credit;
+            totalPrice += course.price;
+        });
+        const totalSum = budgetCredit - credit;
+        console.log(totalSum, credit);
+        if (totalSum < 0) {
+            return toast("Greeter than twenty credit is not added")
+        }
+        else if (isExist) {
+            return toast("Already booked try another")
         }
         else {
-
             setSelectedCourse([...selectedCourse, course]);
-            selectedCourse.forEach(course => {
-                credit += course.credit;
-            });
-        }
-        const totalSum = budgetCredit - credit;
-        if(totalSum < 0){
-            return alert("No credit remaining")
-        }
-        else{
             setTotalCredit(credit);
-            setCreditRemaininng(totalSum)
+            setCreditRemaininng(totalSum);
+            setPrice(totalPrice);
         }
-        console.log(creditRemaining);
     }
+
+
+
     return (
         <div className="bg-[#F3F3F3] flex gap-6 justify-center">
             <div className="grid grid-cols-3 gap-6">
@@ -61,7 +68,8 @@ const Cards = () => {
                                     </div>
                                 </div>
                                 <div onClick={() => handleAddCourse(course)} className="py-2 bg-[#2F80ED] rounded-lg text-center">
-                                    <button className="text-lg font-semibold text-[#FFF] ">Select</button>
+                                    <button onClick={() => handleAddCourse(course)} className="text-lg font-semibold text-[#FFF] ">Select</button>
+                                    <ToastContainer></ToastContainer>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +79,8 @@ const Cards = () => {
             <div className="w-[312px]">
                 <Cart selectedCourse={selectedCourse}
                     totalCredit={totalCredit}
-                    creditRemaining={creditRemaining}></Cart>
+                    creditRemaining={creditRemaining}
+                    price={price}></Cart>
             </div>
         </div>
     );
