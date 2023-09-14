@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { FaDollarSign, FaBookOpen } from 'react-icons/fa';
+import Cart from "../Cart/Cart";
 
 const Cards = () => {
     const [courses, setCourses] = useState([])
@@ -39,6 +40,7 @@ const Cards = () => {
                 }
             </div>
             <div className="w-[312px]">
+                <Cart></Cart>
             </div>
         </div>
     );
