@@ -29,12 +29,14 @@ const Cards = () => {
             totalPrice += course.price;
         });
         const totalSum = budgetCredit - credit;
-        console.log(totalSum, credit);
         if (totalSum < 0) {
-            return toast("Greeter than twenty credit is not added")
+            return toast("More than twenty credit is not added")
+        }
+        else if(credit > 20){
+            return toast("Credit hours remaining over twenty")
         }
         else if (isExist) {
-            return toast("Already booked try another")
+            return toast("Already added try another")
         }
         else {
             setSelectedCourse([...selectedCourse, course]);
@@ -68,7 +70,7 @@ const Cards = () => {
                                     </div>
                                 </div>
                                 <div onClick={() => handleAddCourse(course)} className="py-2 bg-[#2F80ED] rounded-lg text-center">
-                                    <button onClick={() => handleAddCourse(course)} className="text-lg font-semibold text-[#FFF] ">Select</button>
+                                    <button className="text-lg font-semibold text-[#FFF] ">Select</button>
                                     <ToastContainer></ToastContainer>
                                 </div>
                             </div>
