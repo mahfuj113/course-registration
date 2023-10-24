@@ -30,13 +30,13 @@ const Cards = () => {
         });
         const totalSum = budgetCredit - credit;
         if (totalSum < 0) {
-            return toast("More than twenty credit is not added")
+            toast("More than twenty credit is not added")
         }
         else if(credit > 20){
-            return toast("Credit hours remaining over twenty")
+             toast("Credit hours remaining over twenty")
         }
         else if (isExist) {
-            return toast("Already added try another")
+             toast("Already added try another")
         }
         else {
             setSelectedCourse([...selectedCourse, course]);
